@@ -1,0 +1,125 @@
+import tkinter as tk
+from tkinter import messagebox
+import random
+
+class LieDetectorGame:
+    def __init__(self, master):
+        self.master = master
+        master.title('El Juego de las Mentiras')
+        master.geometry('500x300')
+        master.resizable(False, False)
+
+        self.statements = []
+        self.load_statements()
+        self.current_round = 0
+        self.score = 0
+
+        self.setup_ui()
+        self.start_new_round()
+
+    def load_statements(self):
+        # Cada tupla contiene (afirmación, es_mentira)
+        self.statements = [
+            ("Un año tiene 366 días.", True),  # Mentira (normalmente 365)
+            ("Los Beatles eran una banda de música.", False), # Verdad
+            ("El rojo es un color primario.", False), # Verdad
+            ("El agua hierve a 100 grados Celsius al nivel del mar.", False), # Verdad
+            ("Los perros maúllan.", True), # Mentira
+            ("La Tierra es plana.", True), # Mentira
+            ("El sol gira alrededor de la Tierra.", True), # Mentira
+            ("El baloncesto se juega con los pies.", True), # Mentira
+            ("El cielo es generalmente azul durante el día.", False), # Verdad
+            ("Las abejas producen miel.", False) # Verdad
+        ]
+        random.shuffle(self.statements) # Mezcla las afirmaciones para variedad
+
+    def setup_ui(self):
+        self.menu_bar = tk.Menu(self.master)
+        self.master.config(menu=self.menu_bar)
+
+        game_menu = tk.Menu(self.menu_bar, tearoff=0)
+        self.menu_bar.add_cascade(label='Juego', menu=game_menu)
+        game_menu.add_command(label='Nuevo Juego', command=self.reset_game)
+        game_menu.add_separator()
+        game_menu.add_command(label='Salir', command=self.master.quit)
+
+        self.score_label = tk.Label(self.master, text=f"Puntuación: {self.score}", font=('Arial', 14))
+        self.score_label.pack(pady=10)
+
+        self.question_label = tk.Label(self.master, text="¿Cuál es la mentira?", font=('Arial', 16, 'bold'))
+        self.question_label.pack(pady=20)
+
+        self.statement_buttons_frame = tk.Frame(self.master)
+        self.statement_buttons_frame.pack(pady=10)
+
+        self.buttons = []
+        for i in range(3):
+            button = tk.Button(self.statement_buttons_frame, text="", width=40, height=2, font=('Arial', 12), command=lambda i=i: self.check_answer(i))
+            button.grid(row=i, column=0, pady=5)
+            self.buttons.append(button)
+
+    def start_new_round(self):
+        if self.current_round >= len(self.statements) // 3: # Asegura tener suficientes afirmaciones para rondas
+            self.end_game()
+            return
+
+        # Selecciona 3 afirmaciones, asegurándose de que al menos una sea una mentira
+        selected_statements = []
+        true_statements_count = 0
+        lie_found = False
+
+        while len(selected_statements) < 3:
+            statement, is_lie = self.statements[self.current_round * 3 + len(selected_statements)]
+            selected_statements.append((statement, is_lie))
+            if is_lie:
+                lie_found = True
+            else:
+                true_statements_count += 1
+
+        # Si no hay una mentira, forzar una (esto es para mayor robustez, aunque con un buen set de datos no debería pasar)
+        if not lie_found:
+            # Reemplazar una verdad con una mentira de las que no han sido usadas o de un set predefinido
+            for i in range(len(self.statements)):
+                if self.statements[i][1] and self.statements[i] not in selected_statements:
+                    selected_statements[random.randint(0,2)] = self.statements[i]
+                    break
+
+        random.shuffle(selected_statements) # Mezcla las afirmaciones para cada ronda
+
+        self.current_statements = selected_statements
+        for i, (statement_text, _) in enumerate(selected_statements):
+            self.buttons[i].config(text=statement_text, state=tk.NORMAL)
+
+    def check_answer(self, button_index):
+        statement_text, is_lie = self.current_statements[button_index]
+        if is_lie:
+            self.score += 1
+            messagebox.showinfo("¡Correcto!", "¡Has encontrado la mentira!")
+        else:
+            messagebox.showerror("¡Incorrecto!", f"Esa no era la mentira. La afirmación '{statement_text}' es verdadera.")
+        
+        self.score_label.config(text=f"Puntuación: {self.score}")
+        self.current_round += 1
+        self.start_new_round()
+
+    def end_game(self):
+        messagebox.showinfo("Juego Terminado", f"¡Juego terminado! Tu puntuación final es: {self.score}")
+        for button in self.buttons:
+            button.config(state=tk.DISABLED)
+        # Ofrecer reiniciar el juego
+        if messagebox.askyesno("Reiniciar", "¿Quieres jugar de nuevo?"):
+            self.reset_game()
+        else:
+            self.master.quit()
+
+    def reset_game(self):
+        self.score = 0
+        self.current_round = 0
+        self.score_label.config(text=f"Puntuación: {self.score}")
+        random.shuffle(self.statements) # Mezcla las afirmaciones de nuevo
+        self.start_new_round()
+
+if __name__ == '__main__':
+    root = tk.Tk()
+    game = LieDetectorGame(root)
+    root.mainloop(
