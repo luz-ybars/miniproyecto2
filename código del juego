@@ -116,10 +116,10 @@ class LieDetectorGame:
         self.score = 0
         self.current_round = 0
         self.score_label.config(text=f"Puntuación: {self.score}")
-        random.shuffle(self.statements) # Mezcla las afirmaciones de nuevo
+        random.shuffle(self.statements) 
         self.start_new_round()
 
 if __name__ == '__main__':
     root = tk.Tk()
     game = LieDetectorGame(root)
-    root.mainloop(
+    root.mainloop()
