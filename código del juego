@@ -106,7 +106,7 @@ class LieDetectorGame:
         messagebox.showinfo("Juego Terminado", f"¡Juego terminado! Tu puntuación final es: {self.score}")
         for button in self.buttons:
             button.config(state=tk.DISABLED)
-        # Ofrecer reiniciar el juego
+        
         if messagebox.askyesno("Reiniciar", "¿Quieres jugar de nuevo?"):
             self.reset_game()
         else:
