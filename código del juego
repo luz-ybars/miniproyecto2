@@ -18,18 +18,18 @@ class LieDetectorGame:
         self.start_new_round()
 
     def load_statements(self):
-        # Cada tupla contiene (afirmación, es_mentira)
+    
         self.statements = [
-            ("Un año tiene 366 días.", True),  # Mentira (normalmente 365)
-            ("Los Beatles eran una banda de música.", False), # Verdad
-            ("El rojo es un color primario.", False), # Verdad
-            ("El agua hierve a 100 grados Celsius al nivel del mar.", False), # Verdad
-            ("Los perros maúllan.", True), # Mentira
-            ("La Tierra es plana.", True), # Mentira
-            ("El sol gira alrededor de la Tierra.", True), # Mentira
-            ("El baloncesto se juega con los pies.", True), # Mentira
-            ("El cielo es generalmente azul durante el día.", False), # Verdad
-            ("Las abejas producen miel.", False) # Verdad
+            ("Un año tiene 366 días.", True),  
+            ("Los Beatles eran una banda de música.", False), 
+            ("El rojo es un color primario.", False), 
+            ("El agua hierve a 100 grados Celsius.", False), 
+            ("Los perros ladran.", False), 
+            ("La Tierra es plana.", True),
+            (Las zanahorias son naranjas.", False),
+            ("El baloncesto se juega con los pies.", True), 
+            ("El cielo es generalmente azul durante el día.", False), 
+            ("Las abejas producen miel.", False) 
         ]
         random.shuffle(self.statements) # Mezcla las afirmaciones para variedad
 
@@ -59,11 +59,11 @@ class LieDetectorGame:
             self.buttons.append(button)
 
     def start_new_round(self):
-        if self.current_round >= len(self.statements) // 3: # Asegura tener suficientes afirmaciones para rondas
+        if self.current_round >= len(self.statements) // 3: 
             self.end_game()
             return
 
-        # Selecciona 3 afirmaciones, asegurándose de que al menos una sea una mentira
+        
         selected_statements = []
         true_statements_count = 0
         lie_found = False
@@ -76,9 +76,9 @@ class LieDetectorGame:
             else:
                 true_statements_count += 1
 
-        # Si no hay una mentira, forzar una (esto es para mayor robustez, aunque con un buen set de datos no debería pasar)
+        
         if not lie_found:
-            # Reemplazar una verdad con una mentira de las que no han sido usadas o de un set predefinido
+           
             for i in range(len(self.statements)):
                 if self.statements[i][1] and self.statements[i] not in selected_statements:
                     selected_statements[random.randint(0,2)] = self.statements[i]
