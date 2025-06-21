@@ -26,12 +26,12 @@ class LieDetectorGame:
             ("El agua hierve a 100 grados Celsius.", False), 
             ("Los perros ladran.", False), 
             ("La Tierra es plana.", True),
-            (Las zanahorias son naranjas.", False),
+            ("Las zanahorias son naranjas.", False),
             ("El baloncesto se juega con los pies.", True), 
             ("El cielo es generalmente azul durante el día.", False), 
             ("Las abejas producen miel.", False) 
         ]
-        random.shuffle(self.statements) # Mezcla las afirmaciones para variedad
+        random.shuffle(self.statements) 
 
     def setup_ui(self):
         self.menu_bar = tk.Menu(self.master)
@@ -84,7 +84,7 @@ class LieDetectorGame:
                     selected_statements[random.randint(0,2)] = self.statements[i]
                     break
 
-        random.shuffle(selected_statements) # Mezcla las afirmaciones para cada ronda
+        random.shuffle(selected_statements) 
 
         self.current_statements = selected_statements
         for i, (statement_text, _) in enumerate(selected_statements):
