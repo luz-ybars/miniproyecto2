@@ -1,15 +1,10 @@
 Equipo 5
 
-Integrantes : Acosta, Mayra Rocio
-                       Galarza, Braian 
-                       González, Luis 
-                       Grosso, Gina
-                       Parodi, Gustavo                              
-                       Ybars gómez de la fuente Luz
+Integrantes : Acosta Mayra Rocio, Galarza Braian , González Luis, Grosso Gina, Parodi Gustavo, Ybars gómez de la fuente Luz
 
 
 
-                              Mini proyecto elegido menú desplegable.
+Mini proyecto elegido menú desplegable.
 
 
 
